@@ -7,8 +7,8 @@
  */
 import java.util.Comparator;
 
-public class BFSComparator implements Comparator<Location>{
-        @Override public int compare(Location x, Location y) {
+public class BFSComparator implements Comparator<State>{
+        @Override public int compare(State x, State y) {
            return 1;
         }
 }

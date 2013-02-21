@@ -17,6 +17,8 @@ public class Solver {
     Problem problem;
     double solTime;
     Algorithm solutionAlgo;
+    Comparator<State> comparator;
+
     public Solver(Problem p, Algorithm alg){
         visitOrder = new LinkedList<State>();
         visited = new Hashtable<reducedState, Integer>();
@@ -25,15 +27,16 @@ public class Solver {
         solutionAlgo = alg;
         switch (solutionAlgo){
             case BFS:
-                frontierList = new PriorityQueue<State>(500,(Comparator)new BFSComparator());
+                comparator = new BFSComparator();
                 break;
             case DFS:
-                frontierList = new PriorityQueue<State>(500,(Comparator)new DFSComparator());
+                comparator = new DFSComparator();
                 break;
             default:
                 System.out.println("unknown Algo");
                 System.exit(-1);
         }
+        frontierList = new PriorityQueue<State>(500,comparator);
     }
     public boolean solve() {
         double curSpeed = problem.initialSpeed;
