@@ -8,10 +8,14 @@
 public class State {
     Location stateLocation;
     double speedAtLocation;
+    double g;
+    double f;
 
-    public State(Location sL,double speed){
+    public State(Location sL,double speed,double tg,double tf){
         stateLocation = sL;
         speed = speedAtLocation;
+        g=tg;
+        f=tf;
     }
 
     public Location getStateLocation() {
@@ -28,5 +32,15 @@ public class State {
 
     public void setSpeedAtLocation(double speedAtLocation) {
         this.speedAtLocation = speedAtLocation;
+    }
+
+    public String toLogString(){
+        StringBuilder ret = new StringBuilder("x = ");
+        ret.append(Integer.toString(stateLocation.xcood)+" y = ");
+        ret.append(Integer.toString(stateLocation.ycood)+" speed = ");
+        ret.append(Double.toString(speedAtLocation)+" g = ");
+        ret.append(Double.toString(g)+" f = ");
+        ret.append(Double.toString(f));
+        return ret.toString();
     }
 }
