@@ -17,4 +17,8 @@ public class Logger {
     public static void appendStateLog(String x){
         stateLog.append(x+"\n");
     }
+
+    public static void appendSearchLog(String x){
+        searchLog.append(x+"\n");
+    }
 }
