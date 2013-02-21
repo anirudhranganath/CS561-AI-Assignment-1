@@ -8,25 +8,22 @@
 public class Location {
     int xcood;
     int ycood;
-    Location(int x, int y) {
+
+    public Location(int x, int y) {
         xcood = x;
         ycood = y;
     }
 
-    public int getXcood ( )
-    {
+    public int getXcood ( )  {
         return xcood;
     }
-    public int getYcood ( )
-    {
+    public int getYcood ( )  {
         return ycood;
     }
-    public void setXcood(int xc)
-    {
+    public void setXcood(int xc) {
         xcood = xc;
     }
-    public void setYcood(int yc)
-    {
+    public void setYcood(int yc) {
         xcood = yc;
     }
 }
