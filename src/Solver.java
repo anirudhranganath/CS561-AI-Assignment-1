@@ -98,7 +98,9 @@ public class Solver {
         retVal.add(new Location(loc.xcood+1,loc.ycood));   //e
         retVal.add(new Location(loc.xcood,loc.ycood+1));   //s
         retVal.add(new Location(loc.xcood-1,loc.ycood));   //w
-        for(Location tl:retVal) {
+        ListIterator<Location> lister= retVal.listIterator();
+        while(lister.hasNext()) {
+            Location tl = lister.next();
             if(tl.xcood < 0 || tl.ycood < 0 || tl.xcood > problem.width || tl.ycood > problem.height )
                 retVal.remove(tl);
             if(!(problem.mud.contains(tl) || problem.white.contains(tl)))
