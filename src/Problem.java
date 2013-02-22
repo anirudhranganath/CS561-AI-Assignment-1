@@ -39,7 +39,7 @@ public class Problem {
             for(int h=0;h<height;h++) {
                 input = br.readLine();
                 for(int w = 0; w<width ; w++ ) {
-                    System.out.println(input);
+                    //System.out.println(input);
                     inchar = input.charAt(w);
                     if(inchar==' ')
                         white.add(new Location(w,h));
