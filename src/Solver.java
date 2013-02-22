@@ -103,7 +103,7 @@ public class Solver {
             Location tl = lister.next();
             if(tl.xcood < 0 || tl.ycood < 0 || tl.xcood > problem.width || tl.ycood > problem.height )
                lister.remove();
-            if(!(problem.mud.contains(tl) || problem.white.contains(tl)))
+            else if(!(problem.mud.contains(tl) || problem.white.contains(tl)))
                lister.remove();
         }
         //Collections.reverse(retVal);
