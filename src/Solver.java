@@ -57,7 +57,8 @@ public class Solver {
             //g += 1/curSpeed;
             String stateLogString= curState.toLogString();
             Logger.appendStateLog(stateLogString);
-            if(curState.stateLocation == problem.goal) {
+            if(curState.stateLocation.equals(problem.goal)) {
+                Logger.nIter = niter;
                 return true;
             }
             if(problem.mud.contains(curState.stateLocation)) {
@@ -69,6 +70,7 @@ public class Solver {
             //expand
             StringBuilder searchLogSB = new StringBuilder("Iteration = "+niter+"\n"+"Current Node: " + stateLogString+"\n");
             searchLogSB.append("Child List:\n");
+            //System.out.println(String.format("Expanding %d %d",curState.stateLocation.xcood,curState.stateLocation.ycood));
             LinkedList<Location> children= expand(curState.stateLocation);
             int childIndex = 0;
             if(children!=null) {
@@ -85,6 +87,7 @@ public class Solver {
             for(State x:frontierList) {
                  searchLogSB.append(String.format("index = %d %s\n",childIndex++,x.toLogString()));
             }
+            Logger.appendSearchLog(searchLogSB.toString());
         }
         return false;
     }
@@ -101,12 +104,19 @@ public class Solver {
         ListIterator<Location> lister= retVal.listIterator();
         while(lister.hasNext()) {
             Location tl = lister.next();
-            if(tl.xcood < 0 || tl.ycood < 0 || tl.xcood > problem.width || tl.ycood > problem.height )
-               lister.remove();
-            else if(!(problem.mud.contains(tl) || problem.white.contains(tl)))
-               lister.remove();
+            //System.out.println(Integer.toString(tl.xcood)+Integer.toString(tl.ycood));
+            if(tl.xcood < 0 || tl.ycood < 0 || tl.xcood > problem.width || tl.ycood > problem.height )  {
+                lister.remove();
+            }
+            else if(!(problem.mud.contains(tl) || problem.white.contains(tl) || problem.start.equals(tl) || problem.goal.equals(tl))){
+                //System.out.println(Integer.toString(tl.xcood)+Integer.toString(tl.ycood));
+                lister.remove();
+            }
         }
         //Collections.reverse(retVal);
+        for(Location tl:problem.white){
+            //System.out.println(Integer.toString(tl.xcood)+Integer.toString(tl.ycood));
+        }
         return retVal;
     }
     double hcost(Location x){
