@@ -26,4 +26,9 @@ public class Location {
     public void setYcood(int yc) {
         xcood = yc;
     }
+    public boolean equals(Object obj) {
+        return (obj instanceof Location
+                && xcood == ((Location) obj).xcood
+                && ycood == ((Location) obj).ycood);
+    }
 }
