@@ -102,9 +102,9 @@ public class Solver {
         while(lister.hasNext()) {
             Location tl = lister.next();
             if(tl.xcood < 0 || tl.ycood < 0 || tl.xcood > problem.width || tl.ycood > problem.height )
-                retVal.remove(tl);
+               lister.remove();
             if(!(problem.mud.contains(tl) || problem.white.contains(tl)))
-               retVal.remove(tl);
+               lister.remove();
         }
         //Collections.reverse(retVal);
         return retVal;
