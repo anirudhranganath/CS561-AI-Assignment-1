@@ -23,7 +23,7 @@ public class Problem {
     Problem()
     {
         initialSpeed = 2.0;
-        decrementalSpeedReductionOnMud = 0.1;
+        decrementalSpeedReductionOnMud = Main.decrementalSpeedReductionOnMud;
         white = new LinkedList<Location>();
         mud = new LinkedList<Location>();
     }
