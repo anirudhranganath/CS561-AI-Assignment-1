@@ -10,12 +10,14 @@ public class State {
     double speedAtLocation;
     double g;
     double f;
+    public State parent;
 
     public State(Location sL,double speed,double tg,double tf){
         stateLocation = sL;
-        speed = speedAtLocation;
+        speedAtLocation = speed;
         g=tg;
         f=tf;
+        parent = null;
     }
 
     public Location getStateLocation() {
@@ -42,5 +44,12 @@ public class State {
         ret.append(Double.toString(g)+" f = ");
         ret.append(Double.toString(f));
         return ret.toString();
+    }
+
+    public boolean hasBeenBefore(Object obj) {
+        System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
+        return (obj instanceof State
+                && stateLocation.equals(((State) obj).stateLocation)
+                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)<Main.doubleEpsilon));
     }
 }
