@@ -12,7 +12,7 @@ enum Algorithm {
 }
 public class Solver {
     LinkedList<State> visitOrder;
-    Hashtable<reducedState,Integer> visited;
+    LinkedList<State> visited;
     PriorityQueue<State> frontierList;
     Problem problem;
     double solTime;
@@ -21,7 +21,7 @@ public class Solver {
 
     public Solver(Problem p, Algorithm alg){
         visitOrder = new LinkedList<State>();
-        visited = new Hashtable<reducedState, Integer>();
+        visited = new LinkedList<State> ();
         solTime = 0;
         problem = p;
         solutionAlgo = alg;
@@ -53,12 +53,23 @@ public class Solver {
             niter++;
             //visit
             visitOrder.add(curState);
-            visited.put(new reducedState(curState.stateLocation, curState.speedAtLocation), 1);
+            visited.add(curState);
             //g += 1/curSpeed;
             String stateLogString= curState.toLogString();
-            Logger.appendStateLog(stateLogString);
+            //Logger.appendStateLog(stateLogString);
             if(curState.stateLocation.equals(problem.goal)) {
                 Logger.nIter = niter;
+                LinkedList<State> path = new LinkedList<State>();
+                State cstate=curState;
+                while(cstate!=null){
+                    path.add(cstate);
+                    cstate = cstate.parent;
+                }
+                Collections.reverse(path);
+                for(State st:path) {
+                    Logger.appendStateLog(st.toLogString());
+                }
+                Logger.pathLength = path.size();
                 return true;
             }
             if(problem.mud.contains(curState.stateLocation)) {
@@ -76,10 +87,18 @@ public class Solver {
             if(children!=null) {
                 for(Location child:children) {
                     searchLogSB.append(String.format("index = %d %s\n",childIndex++,new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child)).toLogString()));
-                    if(visited.containsKey(new reducedState(child,curSpeed))) {
-                          continue;
+                    int visitflag = 0;
+                    for(State vis:visited){
+                        if (vis.hasBeenBefore(new State(child,curSpeed,0,0)))  {
+                            visitflag =1 ;
+                            break;
+                        }
                     }
-                    frontierList.add(new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child)));
+                    if(visitflag==0) {
+                        State tstate = new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                        tstate.parent = curState;
+                        frontierList.add(tstate);
+                    }
                 }
             }
             searchLogSB.append("Frontier List:\n");
