@@ -7,12 +7,12 @@
  */
 public class State {
     Location stateLocation;
-    double speedAtLocation;
-    double g;
-    double f;
+    float speedAtLocation;
+    float g;
+    float f;
     public State parent;
 
-    public State(Location sL,double speed,double tg,double tf){
+    public State(Location sL,float speed,float tg,float tf){
         stateLocation = sL;
         speedAtLocation = speed;
         g=tg;
@@ -32,7 +32,7 @@ public class State {
         return speedAtLocation;
     }
 
-    public void setSpeedAtLocation(double speedAtLocation) {
+    public void setSpeedAtLocation(float speedAtLocation) {
         this.speedAtLocation = speedAtLocation;
     }
 
@@ -40,14 +40,22 @@ public class State {
         StringBuilder ret = new StringBuilder("x = ");
         ret.append(Integer.toString(stateLocation.xcood)+" y = ");
         ret.append(Integer.toString(stateLocation.ycood)+" speed = ");
-        ret.append(Double.toString(speedAtLocation)+" g = ");
-        ret.append(Double.toString(g)+" f = ");
-        ret.append(Double.toString(f));
+        ret.append(Double.toString(speedAtLocation)+" g = "+Double.toString(g));
+        if(!(Main.algoinUse==Algorithm.BFS || Main.algoinUse==Algorithm.DFS)){
+            ret.append(" f = "+Double.toString(f));
+        }
         return ret.toString();
     }
 
     public boolean hasBeenBefore(Object obj) {
-        System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
+        //System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
+        return (obj instanceof State
+                && stateLocation.equals(((State) obj).stateLocation)
+                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)<Main.doubleEpsilon));
+    }
+
+    public boolean equals(Object obj) {
+        //System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
         return (obj instanceof State
                 && stateLocation.equals(((State) obj).stateLocation)
                 && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)<Main.doubleEpsilon));

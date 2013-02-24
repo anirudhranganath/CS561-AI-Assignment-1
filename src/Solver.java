@@ -13,41 +13,32 @@ enum Algorithm {
 public class Solver {
     LinkedList<State> visitOrder;
     LinkedList<State> visited;
-    PriorityQueue<State> frontierList;
+    Collector<State> frontierList;
     Problem problem;
-    double solTime;
+    float solTime;
     Algorithm solutionAlgo;
     Comparator<State> comparator;
 
     public Solver(Problem p, Algorithm alg){
         visitOrder = new LinkedList<State>();
         visited = new LinkedList<State> ();
-        solTime = 0;
+        solTime = 0f;
         problem = p;
         solutionAlgo = alg;
-        switch (solutionAlgo){
-            case BFS:
-                comparator = new BFSComparator();
-                break;
-            case DFS:
-                comparator = new DFSComparator();
-                break;
-            default:
-                System.out.println("unknown Algo");
-                System.exit(-1);
-        }
-        frontierList = new PriorityQueue<State>(500,comparator);
+        frontierList = new Collector<State>(solutionAlgo);
     }
     public boolean solve() {
-        double curSpeed = problem.initialSpeed;
+        float curSpeed = problem.initialSpeed;
         frontierList.add(new State(problem.start,curSpeed,0,0));
         State curState = null;
         //solTime = 0 - 1/curSpeed; //since time = 0 at start
         int niter = 0;
-        double g,f;
+        float g,f;
         while (!frontierList.isEmpty()){
             curState = frontierList.poll();
             curSpeed = curState.speedAtLocation;
+            if(Math.abs(curSpeed-0)<Main.doubleEpsilon || curSpeed <= 0)
+                continue;
             g=curState.g;
             f=curState.f;
             niter++;
@@ -58,7 +49,7 @@ public class Solver {
             String stateLogString= curState.toLogString();
             //Logger.appendStateLog(stateLogString);
             if(curState.stateLocation.equals(problem.goal)) {
-                Logger.nIter = niter;
+                Logger.nIter = niter-1;
                 LinkedList<State> path = new LinkedList<State>();
                 State cstate=curState;
                 while(cstate!=null){
@@ -72,12 +63,6 @@ public class Solver {
                 Logger.pathLength = path.size();
                 return true;
             }
-            if(problem.mud.contains(curState.stateLocation)) {
-                curSpeed -= problem.decrementalSpeedReductionOnMud;
-                if(curSpeed<=0)
-                    continue;
-            }
-
             //expand
             StringBuilder searchLogSB = new StringBuilder("Iteration = "+niter+"\n"+"Current Node: " + stateLogString+"\n");
             searchLogSB.append("Child List:\n");
@@ -88,14 +73,46 @@ public class Solver {
                 for(Location child:children) {
                     searchLogSB.append(String.format("index = %d %s\n",childIndex++,new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child)).toLogString()));
                     int visitflag = 0;
-                    for(State vis:visited){
-                        if (vis.hasBeenBefore(new State(child,curSpeed,0,0)))  {
-                            visitflag =1 ;
-                            break;
+                    if(problem.mud.contains(child)) {
+                        for(State vis:visited){
+                            if (vis.hasBeenBefore(new State(child,curSpeed-problem.decrementalSpeedReductionOnMud,0,0)))  {
+                                visitflag =1 ;
+                                break;
+                            }
+                        }
+                        if(visitflag==0){
+                            for(State vis:frontierList.collections){
+                                if (vis.hasBeenBefore(new State(child,curSpeed-problem.decrementalSpeedReductionOnMud,0,0)))  {
+                                    visitflag =1 ;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        for(State vis:visited){
+                            if (vis.hasBeenBefore(new State(child,curSpeed,0,0)))  {
+                                visitflag =1 ;
+                                break;
+                            }
+                        }
+                        if(visitflag==0){
+                            for(State vis:frontierList.collections){
+                                if (vis.hasBeenBefore(new State(child,curSpeed,0,0)))  {
+                                    visitflag =1 ;
+                                    break;
+                                }
+                            }
                         }
                     }
                     if(visitflag==0) {
-                        State tstate = new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                        State tstate;
+                        if(problem.mud.contains(child))  {
+                            tstate = new State(child,curSpeed-problem.decrementalSpeedReductionOnMud,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                        }
+                        else{
+                            tstate = new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                        }
                         tstate.parent = curState;
                         frontierList.add(tstate);
                     }
@@ -103,7 +120,7 @@ public class Solver {
             }
             searchLogSB.append("Frontier List:\n");
             childIndex = 0;
-            for(State x:frontierList) {
+            for(State x:frontierList.collections) {
                  searchLogSB.append(String.format("index = %d %s\n",childIndex++,x.toLogString()));
             }
             Logger.appendSearchLog(searchLogSB.toString());
@@ -132,13 +149,13 @@ public class Solver {
                 lister.remove();
             }
         }
-        //Collections.reverse(retVal);
+        Collections.reverse(retVal);
         for(Location tl:problem.white){
             //System.out.println(Integer.toString(tl.xcood)+Integer.toString(tl.ycood));
         }
         return retVal;
     }
-    double hcost(Location x){
+    float hcost(Location x){
         switch (solutionAlgo) {
             case BFS:
             case DFS:
