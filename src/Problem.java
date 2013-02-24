@@ -15,14 +15,14 @@ public class Problem {
     LinkedList<Location> mud;
     Location start;
     Location goal;
-    double initialSpeed;
-    double decrementalSpeedReductionOnMud;
+    float initialSpeed;
+    float decrementalSpeedReductionOnMud;
     int width;
     int height;
 
     Problem()
     {
-        initialSpeed = 2.0;
+        initialSpeed = 2.0f;
         decrementalSpeedReductionOnMud = Main.decrementalSpeedReductionOnMud;
         white = new LinkedList<Location>();
         mud = new LinkedList<Location>();
