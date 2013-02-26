@@ -64,7 +64,7 @@ class Search {
             }
             else {  //algo is settled
                 //System.out.println("ott"+ args[i]);
-                if(args[i].equals("–s")){
+                if(args[i].equals("-s")){
                     initialSpeed = Float.parseFloat(args[i+1]);
                     i++;
                 }
@@ -72,7 +72,7 @@ class Search {
                     ifile = args[i+1];
                     i++;
                 }
-                if(args[i].equals("–o")){
+                if(args[i].equals("-o")){
                     ofile = args[i+1];
                     i++;
                 }
