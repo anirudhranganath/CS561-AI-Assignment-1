@@ -24,6 +24,29 @@ public class Collector<E> {
             case DFS:
                 collections.addFirst(object);
                 break;
+            case AS1:
+            case AS2:
+            case BS1:
+            case BS2:
+                int addedFlag = 0;
+                for(int i=0;i<collections.size();i++) {
+                    E temp = collections.get(i);
+                    if(((State)temp).f>((State)object).f) {
+                        collections.add(i,object);
+                        addedFlag = 1;
+                        break;
+                    }
+                }
+                if(addedFlag==0) {
+                    collections.addLast(object);
+                }
+        }
+        switch (mode) {
+            case BS1:
+            case BS2:
+                while (collections.size() > Search.bsSize) {
+                    collections.removeLast();
+                }
         }
     }
 
