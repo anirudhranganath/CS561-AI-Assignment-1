@@ -41,7 +41,7 @@ public class State {
         ret.append(Integer.toString(stateLocation.xcood)+" y = ");
         ret.append(Integer.toString(stateLocation.ycood)+" speed = ");
         ret.append(Double.toString(speedAtLocation)+" g = "+Double.toString(g));
-        if(!(Main.algoinUse==Algorithm.BFS || Main.algoinUse==Algorithm.DFS)){
+        if(!(Search.algoinUse==Algorithm.BFS || Search.algoinUse==Algorithm.DFS)){
             ret.append(" f = "+Double.toString(f));
         }
         return ret.toString();
@@ -51,13 +51,13 @@ public class State {
         //System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
         return (obj instanceof State
                 && stateLocation.equals(((State) obj).stateLocation)
-                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)<Main.doubleEpsilon));
+                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)< Search.doubleEpsilon));
     }
 
     public boolean equals(Object obj) {
         //System.out.println("sp" + Double.toString(speedAtLocation - ((State) obj).speedAtLocation));
         return (obj instanceof State
                 && stateLocation.equals(((State) obj).stateLocation)
-                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)<Main.doubleEpsilon));
+                && (Math.abs(speedAtLocation - ((State) obj).speedAtLocation)< Search.doubleEpsilon));
     }
 }
