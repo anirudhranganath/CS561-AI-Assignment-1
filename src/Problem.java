@@ -22,8 +22,8 @@ public class Problem {
 
     Problem()
     {
-        initialSpeed = 2.0f;
-        decrementalSpeedReductionOnMud = Main.decrementalSpeedReductionOnMud;
+        initialSpeed = Search.initialSpeed;
+        decrementalSpeedReductionOnMud = Search.decrementalSpeedReductionOnMud;
         white = new LinkedList<Location>();
         mud = new LinkedList<Location>();
     }
@@ -55,7 +55,9 @@ public class Problem {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Input file not found, or permission denied");
+            System.exit(-1);
+            //e.printStackTrace();
         } finally {
             try {
                 if (br != null)br.close();
