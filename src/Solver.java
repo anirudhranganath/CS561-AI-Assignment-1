@@ -1,5 +1,5 @@
 import java.util.*;
-
+import java.io.*;
 /**
  * Created with IntelliJ IDEA.
  * User: anirudh
@@ -7,9 +7,7 @@ import java.util.*;
  * Time: 11:27 PM
  * To change this template use File | Settings | File Templates.
  */
-enum Algorithm {
-    BFS,DFS,AS1,AS2
-}
+
 public class Solver {
     LinkedList<State> visitOrder;
     LinkedList<State> visited;
@@ -27,9 +25,9 @@ public class Solver {
         solutionAlgo = alg;
         frontierList = new Collector<State>(solutionAlgo);
     }
-    public boolean solve() {
+    public boolean solve() throws IOException{
         float curSpeed = problem.initialSpeed;
-        frontierList.add(new State(problem.start,curSpeed,0,0));
+        frontierList.add(new State(problem.start,curSpeed,0,hCost(problem.start,curSpeed)));
         State curState = null;
         //solTime = 0 - 1/curSpeed; //since time = 0 at start
         int niter = 0;
@@ -37,7 +35,7 @@ public class Solver {
         while (!frontierList.isEmpty()){
             curState = frontierList.poll();
             curSpeed = curState.speedAtLocation;
-            if(Math.abs(curSpeed-0)<Main.doubleEpsilon || curSpeed <= 0)
+            if(Math.abs(curSpeed-0)< Search.doubleEpsilon || curSpeed <= 0)
                 continue;
             g=curState.g;
             f=curState.f;
@@ -71,7 +69,7 @@ public class Solver {
             int childIndex = 0;
             if(children!=null) {
                 for(Location child:children) {
-                    searchLogSB.append(String.format("index = %d %s\n",childIndex++,new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child)).toLogString()));
+                    searchLogSB.append(String.format("index = %d %s\n",childIndex++,new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+ hCost(child,curSpeed)).toLogString()));
                     int visitflag = 0;
                     if(problem.mud.contains(child)) {
                         for(State vis:visited){
@@ -107,11 +105,12 @@ public class Solver {
                     }
                     if(visitflag==0) {
                         State tstate;
+                        float h = hCost(child,curSpeed);
                         if(problem.mud.contains(child))  {
-                            tstate = new State(child,curSpeed-problem.decrementalSpeedReductionOnMud,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                            tstate = new State(child,curSpeed-problem.decrementalSpeedReductionOnMud,(g+1/curSpeed),(g+1/curSpeed)+h);
                         }
                         else{
-                            tstate = new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+hcost(child));
+                            tstate = new State(child,curSpeed,(g+1/curSpeed),(g+1/curSpeed)+h);
                         }
                         tstate.parent = curState;
                         frontierList.add(tstate);
@@ -149,19 +148,37 @@ public class Solver {
                 lister.remove();
             }
         }
-        Collections.reverse(retVal);
+        //Collections.reverse(retVal);
         for(Location tl:problem.white){
             //System.out.println(Integer.toString(tl.xcood)+Integer.toString(tl.ycood));
         }
         return retVal;
     }
-    float hcost(Location x){
+    float hCost(Location x,float curSpeed) throws IOException{
+        int x1 = x.xcood;
+        int y1 = x.ycood;
+        int x2 = problem.goal.xcood;
+        int y2 = problem.goal.ycood;
+        float retVal = 0;
         switch (solutionAlgo) {
             case BFS:
             case DFS:
                 return 0;
+            case AS1:
+            case BS1:
+                retVal =  (float)Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
+                break;
+            case AS2:
+            case BS2:
+                retVal = (float)(Math.abs(x2-x1)+Math.abs(y2-y1));
+                break;
             default:
                 return 0;
         }
+        if(problem.mud.contains(x))
+            retVal = retVal/(curSpeed-problem.decrementalSpeedReductionOnMud);
+        else
+            retVal = retVal/curSpeed;
+        return retVal;
     }
 }
