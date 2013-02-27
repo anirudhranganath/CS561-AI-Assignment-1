@@ -49,7 +49,7 @@ class Search {
                     algoinUse = Algorithm.BS2;
                     algochoice = 1;
                     if(args[i+1].equals("-k")) {
-                        bsSize = Integer.getInteger(args[i+2]);
+                        bsSize = Integer.parseInt(args[i+2]);
                         i+=2;
                     }
                     else {
