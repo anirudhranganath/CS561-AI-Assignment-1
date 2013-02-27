@@ -13,6 +13,7 @@ class Search {
     public static float initialSpeed = 2.0f;
     public static String ifile = "input_example.txt";
     public static String ofile = "out.txt";
+    public static int iterationsToPrint = 100;     //number of iterations to print in searchlog
     public static void main(String[] args) throws IOException{
         // Testing input
         processArgs(args);

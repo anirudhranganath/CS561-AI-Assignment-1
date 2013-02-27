@@ -122,7 +122,9 @@ public class Solver {
             for(State x:frontierList.collections) {
                  searchLogSB.append(String.format("index = %d %s\n",childIndex++,x.toLogString()));
             }
-            Logger.appendSearchLog(searchLogSB.toString());
+            if(niter<=Search.iterationsToPrint) {
+                Logger.appendSearchLog(searchLogSB.toString());
+            }
         }
         return false;
     }
