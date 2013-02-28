@@ -56,8 +56,8 @@ public class Problem {
         }
         catch (IOException e) {
             System.out.println("Input file not found, or permission denied");
-            System.exit(-1);
-            //e.printStackTrace();
+            //System.exit(-1);
+            e.printStackTrace();
         } finally {
             try {
                 if (br != null)br.close();
