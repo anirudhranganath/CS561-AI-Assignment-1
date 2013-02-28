@@ -64,18 +64,20 @@ class Search {
                 }
             }
             else {  //algo is settled
-                //System.out.println("ott"+ args[i]);
-                if(args[i].equals("-s")){
+                if(args[i].charAt(1) == 's'){
                     initialSpeed = Float.parseFloat(args[i+1]);
                     i++;
+                    continue;
                 }
-                if(args[i].equals("-i")){
+                if(args[i].charAt(1) == 'i'){
                     ifile = args[i+1];
                     i++;
+                    continue;
                 }
-                if(args[i].equals("-o")){
+                if(args[i].charAt(1) == 'o'){
                     ofile = args[i+1];
                     i++;
+                    continue;
                 }
             }
         }
