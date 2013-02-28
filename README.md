@@ -9,5 +9,9 @@ The search log iteration does not contain the goal node since goal isn't expande
 
 Manhattan distance is the heuristic implemented for AStar and Beam Search. To implement euclidean distance, change lines 44 and 49 in Search.java to Algorithm.AS1 and Algorithm.BS1
 
-Processing arguments:
+Compile:
+make
+make clean (to clean)
+
+Run:
 java search {BFS|DFS|AStar|Beam [-k value]} -s initialspeed -i inputfilename –o outputfilename
