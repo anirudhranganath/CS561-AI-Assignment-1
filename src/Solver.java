@@ -126,6 +126,7 @@ public class Solver {
                 Logger.appendSearchLog(searchLogSB.toString());
             }
         }
+        Logger.nIter = niter;
         return false;
     }
 
