@@ -1,0 +1,130 @@
+
+
+BFS1
+
+real 18.09
+user 17.39
+sys 0.69
+
+
+DFS1
+
+real 2.84
+user 2.68
+sys 0.15
+
+
+AS1
+
+real 9.50
+user 8.89
+sys 0.50
+
+
+B51
+
+real 8.48
+user 7.77
+sys 0.60
+
+
+B101
+
+real 13.89
+user 12.82
+sys 0.95
+
+
+B501
+
+real 5.17
+user 4.80
+sys 0.36
+
+
+BFS2
+
+real 42.19
+user 40.84
+sys 1.29
+
+
+BFS1
+
+
+
+DFS2
+
+real 0.48
+user 0.39
+sys 0.08
+
+
+AS2
+
+real 0.86
+user 0.76
+sys 0.10
+
+
+B52
+
+real 0.52
+user 0.45
+sys 0.06
+
+
+B102
+
+real 0.72
+user 0.63
+sys 0.08
+
+
+B502
+
+real 0.87
+user 0.77
+sys 0.08
+
+
+BFS3
+
+real 368.27
+user 360.07
+sys 7.90
+
+
+DFS3
+
+real 108.74
+user 105.25
+sys 3.03
+
+
+AS3
+
+real 327.25
+user 315.80
+sys 9.57
+
+
+B53
+
+real 1.46
+user 1.38
+sys 0.06
+
+
+B103
+
+real 43.75
+user 42.50
+sys 1.07
+
+
+B503
+
+real 126.70
+user 124.05
+sys 2.44
